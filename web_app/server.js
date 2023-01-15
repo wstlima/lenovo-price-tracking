@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname })
 })
 
-app.get('/prices', function (req, res) {
+app.get('/api/prices', function (req, res) {
   res.sendFile('data/prices.json', { root: __dirname })
 })
 
@@ -27,4 +27,9 @@ app.post('/api/alert', async function (req, res) {
   const options = { tag: `${name} (${price})`, workflow: 'TrackLenovoPrice', product: name, productUrl: url, alertPrice: price, hoursBetweenEachCheck: delay };
   const runWorker = await run(options);
   res.json(JSON.stringify(runWorker))
+})
+app.get('/api/clear', async function (req, res) {
+  const writeFile = (path, data, opts = 'utf8') => new Promise((resolve, reject) => require('fs').writeFile(path, data, opts, (err) => (err ? reject(err) : resolve(true))));
+  await writeFile('data/prices.json', '{}', 'utf8');
+  res.json('{}')
 })

@@ -6,6 +6,7 @@
     "scripts": {
       "start": "cd web_app && node server.js",
       "build": "cd web_app && npm run build && cd .. && npm run start",
+      "inst": "cd web_app && npm i && cd .. && cd worker && npm i && cd .. && npm run build",
       "clean": "rimraf -y dist"
     },
     "repository": {
