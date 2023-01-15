@@ -1,10 +1,11 @@
 ## Install
 
-# git clone https://github.com/wstlima/lenovo-price-tracking.git
-# run npm run inst
+1 - git clone https://github.com/wstlima/lenovo-price-tracking.git
+2 - npm run inst
 
 or after install
-# run npm run build
+
+npm run build
 
 App listening on http://localhost:4000
 
