@@ -34,8 +34,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "AddAlert",
   data() {
@@ -47,7 +45,6 @@ export default {
     };
   },
   methods: {
-
     async clearList() {
       const resp = await this.clear('/api/clear');
       this.$emit("show-alert", {
@@ -55,9 +52,7 @@ export default {
         message: `Price list clear!`
       });
     },
-
     async add() {
-
       if (!this.product_url.includes("webscraper")) {
         this.$emit("show-alert", {
           type: "error",
@@ -65,16 +60,13 @@ export default {
         });
         return null;
       }
-
       const payload = {
         name: this.product_name,
         url: this.product_url,
         price: this.price,
         delay: this.delay
       };
-
       const resp = await this.post('/api/alert', payload);
-
       this.$emit("show-alert", {
         type: "success",
         message: `Job finish ${this.product_name} data saved!`
@@ -82,7 +74,6 @@ export default {
       // reset initial state
       Object.assign(this.$data, this.$options.data());
     },
-
     post(url, payload) {
       return fetch(url, {
         method: "post",

@@ -7,3 +7,5 @@
 web_app/yarn.lock
 worker/yarn.lock
 yarn.lock
+web_app/package-lock.json
+worker/package-lock.json

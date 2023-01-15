@@ -17,11 +17,9 @@ console.log('App listening on http://localhost:' + PORT)
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname })
 })
-
 app.get('/api/prices', function (req, res) {
   res.sendFile('data/prices.json', { root: __dirname })
 })
-
 app.post('/api/alert', async function (req, res) {
   const { name, url, price, delay } = req.body;
   const options = { tag: `${name} (${price})`, workflow: 'TrackLenovoPrice', product: name, productUrl: url, alertPrice: price, hoursBetweenEachCheck: delay };
