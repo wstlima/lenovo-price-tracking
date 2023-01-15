@@ -10,6 +10,13 @@
         ></router-link
       >
     </div>
+
+    <div class="w-full block lg:flex lg:items-right lg:w-auto justify-right">
+      <a href="/prices" target="_blank" class="text-gray-900 text-base no-underline hover:no-underline font-bold text-xl">
+        View Prices
+      </a>
+    </div>
+
     <div class="w-full block lg:flex lg:items-right lg:w-auto justify-right">
       <a href="https://github.com/wstlima/lenovo-price-tracking" target="_blank">
         <svg
@@ -24,6 +31,7 @@
         </svg>
       </a>
     </div>
+
   </nav>
 </template>
 
