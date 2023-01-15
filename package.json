@@ -1,0 +1,25 @@
+{
+    "name": "lenovo-price-tracking",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "cd web_app && node server.js",
+      "build": "rimraf -y dist && cd web_app && npm run build && cd .. && npm run start",
+      "clean": "rimraf -y dist"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/wstlima/lenovo-price-tracking.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/wstlima/lenovo-price-tracking/issues"
+    },
+    "homepage": "https://github.com/wstlima/lenovo-price-tracking#readme",
+    "devDependencies": {
+      "rimraf": "^3.0.2"
+    }
+  }
