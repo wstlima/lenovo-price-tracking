@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
       "start": "cd web_app && node server.js",
-      "build": "rimraf -y dist && cd web_app && npm run build && cd .. && npm run start",
+      "build": "cd web_app && npm run build && cd .. && npm run start",
       "clean": "rimraf -y dist"
     },
     "repository": {

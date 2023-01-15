@@ -1,12 +1,14 @@
 const puppeteer = require("puppeteer");
 
 const SELECTORS = {
-  productTitle: "#productTitle",
-  productPrice_1: "#priceblock_dealprice",
-  productPrice_2: "#attach-base-product-price"
+  pageLoadSelector: ".page-header",
+  productCard: ".caption",
+  productTitle: ".title",
+  productPrice_1: ".price",
+  productPrice_2: ".price"
 };
 
-module.exports = task("GetLenovoProductPrice", async function(productUrl) {
+module.exports = async function task(productUrl) {
   const browser = await puppeteer.launch({
     headless: true,
     sandbox: false,
@@ -24,29 +26,32 @@ module.exports = task("GetLenovoProductPrice", async function(productUrl) {
   await page.goto(productUrl);
 
   // wait page load
-  await page.waitForSelector(SELECTORS.productTitle, { visible: true });
+  await page.waitForSelector(SELECTORS.pageLoadSelector, { visible: true });
 
-  let price = null;
+  const listHandle = await page.$('div.container.test-site > div > div > div.row');
+  const prodPrices = await listHandle.$$eval('div > div.thumbnail > div.caption > h4.price', (nodes) => nodes.map((n) => n.innerText))
+  const prodTitles = await listHandle.$$eval('div > div.thumbnail > div.caption > h4 > a.title', (nodes) => nodes.map((n) => n.innerText))
+  const prodDesc = await listHandle.$$eval('div > div.thumbnail > div.caption > p.description', (nodes) => nodes.map((n) => n.innerText))
+  const prodRating = await listHandle.$$eval('div > div.thumbnail > div.ratings', (nodes) => nodes.map((n) => n.innerText))
+  const prodLinks = await listHandle.$$eval('div > div.thumbnail > div.caption > h4 > a.title', (nodes) => nodes.map((n) => n.href))
 
-  // find price
-  let priceInput = await page.$(SELECTORS.productPrice_1);
-  
-  if (priceInput) {
-    price = await page.evaluate(element => element.textContent, priceInput);
-    if (price) {
-      await browser.close();
-      return parseFloat(price.slice(0, -2));
+  let list = []
+  const v = 'lenovo';
+
+  prodTitles.forEach((item, index) => {
+    if (item.toLowerCase().includes(v)) {
+      list.push(
+        {
+          title: prodTitles[index],
+          price: prodPrices[index],
+          description: prodDesc[index],
+          rating: prodRating[index],
+          links: prodLinks[index],
+        }
+      );
     }
-  }
-
-  priceInput = await page.$(SELECTORS.productPrice_2);
-  price = await page.evaluate(element => element.value, priceInput);
+  });
 
   await browser.close();
-
-  if (!price) {
-    return null;
-  }
-
-  return price;
-});
+  return list;
+}

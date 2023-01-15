@@ -1,9 +1,7 @@
 'use strict'
-
+const  run  = require('../worker/client');
 var express = require('express')
 var bodyParser = require('body-parser')
-
-const client = require('../worker/client')
 
 var app = express()
 
@@ -20,9 +18,9 @@ app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname })
 })
 
-app.post('/api/alert', function (req, res) {
+app.post('/api/alert', async function (req, res) {
   const { name, url, price, delay } = req.body;
   const options = { tag: `${name} (${price})`, workflow: 'TrackLenovoPrice', product: name, productUrl: url, alertPrice: price, hoursBetweenEachCheck: delay };
-  client.run(options)
-  res.json()
+  const runWorker = await run(options);
+  res.json(JSON.stringify(runWorker))
 })

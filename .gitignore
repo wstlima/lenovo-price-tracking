@@ -2,4 +2,8 @@
 /web_app/node_modules/
 /web_app/dist/
 /worker/node_modules/
+/node_modules/
 .DS_Store
+web_app/yarn.lock
+worker/yarn.lock
+yarn.lock

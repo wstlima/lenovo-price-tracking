@@ -1,31 +1,11 @@
-'use strict'
+const fs = require('fs');
 
-module.exports = workflow('TrackLenovoPrice', function * (product, productUrl, alertPrice, hoursBetweenEachCheck) {
-  while (true) {
-    // get product price
-    const price = yield require('../Tasks/GetLenovoProductPrice').task('GetLenovoProductPrice', productUrl)
+const readFile = (path, opts = 'utf8') => new Promise((resolve, reject) => require('fs').readFile(path, opts, (err, data) => (err ? reject(err) : resolve(data))));
+const writeFile = (path, data, opts = 'utf8') => new Promise((resolve, reject) => require('fs').writeFile(path, data, opts, (err) => (err ? reject(err) : resolve(true))));
 
-    if (!price) {
-      // Todo: can not find price log
-
-      // body: {
-      //   text: `❌ Can not find price of ${product} \n ➡️ ${productUrl}`,
-      // }
-
-      // terminate workflow
-      this.terminate()
-    }
-
-    // Todo: save alert if needed
-    if (parseFloat(price) < alertPrice) {
-      // body: {
-      //   text: `🚨 ${product} goes below ${alertPrice}€ \n 💰 Current price: ${price} \n ➡️ ${productUrl}`,
-      // }
-      // terminate workflow
-      this.terminate()
-    }
-
-    // wait 4 hours before next check
-    // yield this.wait.for(duration.hours(hoursBetweenEachCheck))
-  }
-})
+module.exports = async function workflow (product, productUrl, alertPrice, hoursBetweenEachCheck) {
+  const task = require('../Tasks/GetLenovoProductPrice')
+  const runTask = await task(productUrl)
+  await writeFile('data/prices.json', JSON.stringify(runTask), 'utf8');
+  return runTask
+}

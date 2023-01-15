@@ -1,20 +1,21 @@
 // load .env file
-const fs = require('fs')
-const dotenv = require('dotenv')
-const dotenvfile = __dirname + '/.env'
+// const fs = require('fs')
+// const dotenv = require('dotenv')
+// const dotenvfile = __dirname + '/.env'
+const  workflow  = require('../worker/Workflows/TrackLenovoPrice')
+// if (fs.existsSync(dotenvfile)) {
+//   dotenv.config({ path: dotenvfile })
+// }
 
-if (fs.existsSync(dotenvfile)) {
-  dotenv.config({ path: dotenvfile })
+async function runJobLenovoWorkFlow(options){
+  const { product, productUrl, alertPrice, hoursBetweenEachCheck } = options;
+  
+  const respWork = await  workflow( product, productUrl, alertPrice, hoursBetweenEachCheck)
+  return respWork
 }
 
-function runJobLenovoWorkFlow(product, productUrl, alertPrice, hoursBetweenEachCheck){
-  return require('../worker/Workflows/TrackLenovoPrice').workflow('TrackLenovoPrice', product, productUrl, alertPrice, hoursBetweenEachCheck)
-}
 
-module.exports = function run(options) {
-  const { tag, workflow, product, productUrl, alertPrice, hoursBetweenEachCheck } = options;
-  if(options.workflow==='TrackLenovoPrice'){
-    return runJobLenovoWorkFlow(product, productUrl, alertPrice, hoursBetweenEachCheck);
-  }  
-  return true
+
+module.exports = async function run(options) {
+    return await runJobLenovoWorkFlow(options);
 }
