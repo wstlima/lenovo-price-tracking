@@ -43,7 +43,7 @@ module.exports = async function task(productUrl) {
       list.push(
         {
           title: prodTitles[index],
-          price: prodPrices[index],
+          price: prodPrices[index].replace('$', ''),
           description: prodDesc[index],
           rating: prodRating[index],
           links: prodLinks[index],
